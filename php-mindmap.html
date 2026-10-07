@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Fundamentals Complete Mind Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            padding: 12px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #00d9ff;
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #00d9ff, #0099cc);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(90deg, #00ff88, #00cc6a);
+            color: #000;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #00d9ff;
+        }
+
+        .stat-card p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .topic-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 217, 255, 0.3);
+        }
+
+        .topic-card.completed {
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .topic-header {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .topic-header:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .topic-header h2 {
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topic-number {
+            background: linear-gradient(90deg, #00d9ff, #0099cc);
+            color: #000;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .topic-card.completed .topic-number {
+            background: linear-gradient(90deg, #00ff88, #00cc6a);
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .topic-card.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .topic-card.expanded .topic-content {
+            max-height: 3000px;
+        }
+
+        .content-inner {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .description {
+            background: rgba(0, 217, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #00d9ff;
+        }
+
+        .subtopics {
+            margin-bottom: 20px;
+        }
+
+        .subtopics h3 {
+            color: #00d9ff;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .subtopic-tree {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: #a0d0a0;
+            overflow-x: auto;
+        }
+
+        .learn-section, .practice-section, .interview-section {
+            margin-bottom: 20px;
+        }
+
+        .learn-section h3, .practice-section h3, .interview-section h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .interview-section h3 {
+            color: #ffaa00;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: rgba(0, 217, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .tag.practice {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .tag.interview {
+            background: rgba(255, 170, 0, 0.2);
+            border-color: rgba(255, 170, 0, 0.3);
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid rgba(0, 255, 136, 0.5);
+            color: #00ff88;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .complete-btn:hover {
+            background: rgba(0, 255, 136, 0.3);
+        }
+
+        .topic-card.completed .complete-btn {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .learning-structure {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .learning-structure h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .structure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .structure-item {
+            background: rgba(0, 217, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .structure-item:hover {
+            background: rgba(0, 217, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .structure-item .icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .structure-item p {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .mindmap {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PHP Fundamentals Complete Mind Map</h1>
+            <p>Master PHP from Basics to Advanced - Interactive Learning Roadmap</p>
+        </header>
+
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search topics, subtopics, concepts...">
+            <button class="btn btn-primary" onclick="expandAll()">📖 Expand All</button>
+            <button class="btn btn-secondary" onclick="collapseAll()">📕 Collapse All</button>
+            <button class="btn btn-success" onclick="resetProgress()">🔄 Reset Progress</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3 id="totalTopics">21</h3>
+                <p>Total Topics</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="completedCount">0</h3>
+                <p>Completed</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="progressPercent">0%</h3>
+                <p>Progress</p>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <div class="mindmap" id="mindmap"></div>
+
+        <div class="learning-structure">
+            <h2>📚 Recommended Learning Structure</h2>
+            <div class="structure-grid">
+                <div class="structure-item">
+                    <div class="icon">📖</div>
+                    <p>Definition</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">📝</div>
+                    <p>Theory</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">💻</div>
+                    <p>Syntax</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">⚠️</div>
+                    <p>Rules</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">⚙️</div>
+                    <p>Internal Working</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">💡</div>
+                    <p>Examples</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">❌</div>
+                    <p>Common Mistakes</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">✅</div>
+                    <p>Best Practices</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">🔧</div>
+                    <p>Built-in Functions</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">🎤</div>
+                    <p>Interview Questions</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">🏋️</div>
+                    <p>Coding Exercises</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">🚀</div>
+                    <p>Mini Project</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">❓</div>
+                    <p>Quiz</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">📋</div>
+                    <p>Summary</p>
+                </div>
+                <div class="structure-item">
+                    <div class="icon">➡️</div>
+                    <p>Next Topic</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const phpTopics = [
+            {
+                id: 1,
+                title: "Variables",
+                description: "Variables are used to store data in PHP. They act as containers for values that can be manipulated throughout your script.",
+                subtopics: `Variables
+│
+├── Variable Declaration
+│   ├── $name = "value";
+│   ├── No type declaration needed
+│   └── Dynamic typing
+│
+├── Naming Rules
+│   ├── Must start with $ sign
+│   ├── Can contain letters, numbers, underscores
+│   ├── Cannot start with number
+│   ├── Case-sensitive ($name ≠ $Name)
+│   └── No spaces or special characters
+│
+├── Scope
+│   ├── Local - Inside functions only
+│   ├── Global - Outside functions, use 'global' keyword
+│   ├── Static - Retains value between calls
+│   └── Super Globals - $GLOBALS, $_POST, $_GET, etc.
+│
+├── Variable Variables
+│   ├── $$var - Variable name is variable
+│   └── Dynamic variable names
+│
+├── References
+│   ├── &$a - Reference assignment
+│   └── Both variables point to same value
+│
+└── Type Casting
+    ├── (int), (float), (string), (bool)
+    ├── settype()
+    └── gettype()`,
+                learn: ["What is a Variable", "How to Create Variables", "Naming Conventions", "Variable Scope Rules", "Superglobals"],
+                practice: ["Store user name and age", "Swap two variables", "Create variable variables", "Demonstrate scope differences"],
+                interview: ["What is the difference between $a and $$a?", "What are superglobals?", "How does variable scope work in PHP?", "What is the static keyword used for?"]
+            },
+            {
+                id: 2,
+                title: "Data Types",
+                description: PHP supports multiple data types including scalar types, compound types, and special types for various programming needs.",
+                subtopics: `Data Types
+│
+├── Scalar Types
+│   ├── Integer - Whole numbers (42, -10, 0)
+│   ├── Float - Decimal numbers (3.14, -2.5)
+│   ├── String - Text ("Hello World")
+│   └── Boolean - True/False
+│
+├── Compound Types
+│   ├── Array - Collection of values
+│   └── Object - Class instances
+│
+├── Special Types
+│   ├── NULL - No value assigned
+│   ├── Resource - External references (files, DB)
+│   └── Callable - Functions/callbacks
+│
+├── Type Checking Functions
+│   ├── is_int(), is_float(), is_string()
+│   ├── is_bool(), is_array(), is_object()
+│   ├── is_null(), is_resource()
+│   └── gettype(), settype()
+│
+└── Type Juggling
+    ├── Automatic type conversion
+    ├── Loose comparison (==)
+    └── Strict comparison (===)`,
+                learn: ["Integer and Float Types", "String Handling", "Boolean Values", "Array Basics", "NULL Type", "Type Checking Functions"],
+                practice: ["Print every data type", "Convert between data types", "Check type of variables", "Demonstrate type juggling"],
+                interview: ["What are the different data types in PHP?", "What is type juggling?", "What is the difference between == and ===?", "How to check if a variable is null?"]
+            },
+            {
+                id: 3,
+                title: "Constants",
+                description: Constants are identifiers for simple values that cannot change during script execution.",
+                subtopics: `Constants
+│
+├── define() Function
+│   ├── define('NAME', 'value')
+│   ├── Case-insensitive option
+│   └── Runtime definition
+│
+├── const Keyword
+│   ├── const NAME = 'value'
+│   ├── Compile-time definition
+│   └── Used in class definitions
+│
+├── Magic Constants
+│   ├── __LINE__ - Current line number
+│   ├── __FILE__ - Full path of file
+│   ├── __DIR__ - Directory of file
+│   ├── __FUNCTION__ - Function name
+│   ├── __CLASS__ - Class name
+│   ├── __METHOD__ - Method name
+│   ├── __NAMESPACE__ - Current namespace
+│   └── __TRAIT__ - Trait name
+│
+└── Constant Arrays
+    ├── define() with arrays
+    └── const with arrays`,
+                learn: ["define() vs const", "When to use constants", "Magic constants usage", "Constant arrays", "Case sensitivity"],
+                practice: ["Define constants for config values", "Use magic constants", "Create constant arrays", "Build configuration file"],
+                interview: ["What is the difference between const and define()?", "List all magic constants", "Can constants be undefined?", "When should you use constants?"]
+            },
+            {
+                id: 4,
+                title: "Operators",
+                description: Operators are symbols that perform operations on variables and values.",
+                subtopics: `Operators
+│
+├── Arithmetic Operators
+│   ├── + (Addition)
+│   ├── - (Subtraction)
+│   ├── * (Multiplication)
+│   ├── / (Division)
+│   ├── % (Modulus)
+│   └── ** (Exponentiation)
+│
+├── Assignment Operators
+│   ├── = (Assign)
+│   ├── += (Add and assign)
+│   ├── -= (Subtract and assign)
+│   ├── *= (Multiply and assign)
+│   ├── /= (Divide and assign)
+│   └── %= (Modulus and assign)
+│
+├── Comparison Operators
+│   ├── == (Equal)
+│   ├── === (Identical)
+│   ├── != (Not equal)
+│   ├── <> (Not equal)
+│   ├── !== (Not identical)
+│   ├── > (Greater than)
+│   ├── < (Less than)
+│   ├── >= (Greater or equal)
+│   └── <= (Less or equal)
+│
+├── Logical Operators
+│   ├── && or and (And)
+│   ├── || or or (Or)
+│   ├── ! (Not)
+│   └── xor (Exclusive or)
+│
+├── Increment/Decrement
+│   ├── ++$a / $a++ (Pre/Post increment)
+│   └── --$a / $a-- (Pre/Post decrement)
+│
+├── String Operator
+│   └── . (Concatenation)
+│
+├── Array Operator
+│   ├── + (Union)
+│   ├── == (Equal)
+│   ├── === (Identical)
+│   ├── != (Not equal)
+│   └── <> (Not identical)
+│
+├── Null Coalescing
+│   └── ?? (Return left if exists)
+│
+├── Spaceship
+│   └── <=> (Returns -1, 0, or 1)
+│
+└── Ternary
+    └── condition ? true : false`,
+                learn: ["Arithmetic Operations", "Comparison Logic", "Logical Operators", "Ternary Operator", "Null Coalescing", "Spaceship Operator"],
+                practice: ["Build simple calculator", "Use comparison operators", "Implement ternary logic", "Practice null coalescing"],
+                interview: ["What is the difference between == and ===?", "Explain the null coalescing operator", "What does the spaceship operator do?", "How does the ternary operator work?"]
+            },
+            {
+                id: 5,
+                title: "Conditions",
+                description: Conditional statements allow you to execute different code based on conditions.",
+                subtopics: `Conditions
+│
+├── if Statement
+│   ├── if (condition) { code }
+│   └── Single condition check
+│
+├── if-else Statement
+│   ├── if (condition) { } else { }
+│   └── Two-way branching
+│
+├── elseif Statement
+│   ├── if () { } elseif () { } else { }
+│   └── Multiple conditions
+│
+├── Nested if
+│   ├── if inside if
+│   └── Complex condition handling
+│
+├── switch Statement
+│   ├── switch (value) { case: break; }
+│   ├── Loose comparison
+│   └── Default case
+│
+├── match Expression (PHP 8)
+│   ├── match (value) { => expression }
+│   ├── Strict comparison
+│   └── Returns value
+│
+├── Ternary Operator
+│   └── condition ? true : false
+│
+└── Null Coalescing
+    └── $value ?? 'default'`,
+                learn: ["if Statement Syntax", "else and elseif", "switch Statement", "match Expression", "Nested Conditions", "Ternary Operator"],
+                practice: ["Grade system (A-F)", "Login validation", "Simple calculator", "Age-based eligibility"],
+                interview: ["What is the difference between switch and match?", "When to use ternary operator?", "How does elseif work?", "Can you nest if statements?"]
+            },
+            {
+                id: 6,
+                title: "Loops",
+                description: Loops allow you to execute a block of code repeatedly.",
+                subtopics: `Loops
+│
+├── while Loop
+│   ├── while (condition) { }
+│   └── Executes while true
+│
+├── do-while Loop
+│   ├── do { } while (condition);
+│   └── Executes at least once
+│
+├── for Loop
+│   ├── for (init; condition; increment)
+│   └── Counter-based loop
+│
+├── foreach Loop
+│   ├── foreach ($array as $value)
+│   ├── foreach ($array as $key => $value)
+│   └── Array iteration
+│
+├── Nested Loops
+│   ├── Loop inside loop
+│   └── Matrix operations
+│
+├── Loop Control
+│   ├── break - Exit loop
+│   ├── continue - Skip iteration
+│   └── goto - Jump to label
+│
+└── Infinite Loop
+    ├── while (true) { }
+    └── Use with break`,
+                learn: ["while Loop", "do-while Loop", "for Loop", "foreach Loop", "Nested Loops", "Loop Control Statements"],
+                practice: ["Multiplication table", "Number patterns", "Star patterns", "Fibonacci sequence", "Prime numbers"],
+                interview: ["What is the difference between while and do-while?", "When to use foreach vs for?", "How to prevent infinite loops?", "What does continue do?"]
+            },
+            {
+                id: 7,
+                title: "Arrays",
+                description: Arrays are ordered maps that store multiple values in a single variable.",
+                subtopics: `Arrays
+│
+├── Array Types
+│   ├── Indexed Array - Numeric keys
+│   ├── Associative Array - String keys
+│   └── Multidimensional - Array of arrays
+│
+├── Array Traversing
+│   ├── foreach loop
+│   ├── for loop with count()
+│   ├── while loop
+│   └── array_walk(), array_map()
+│
+├── Sorting Functions
+│   ├── sort() - Ascending values
+│   ├── rsort() - Descending values
+│   ├── asort() - Ascending with keys
+│   ├── arsort() - Descending with keys
+│   ├── ksort() - Sort by keys
+│   └── krsort() - Reverse sort by keys
+│
+├── Searching
+│   ├── in_array() - Check value exists
+│   ├── array_search() - Find key by value
+│   └── isset() - Check if key exists
+│
+├── Add Elements
+│   ├── array_push() - Add to end
+│   ├── array_unshift() - Add to start
+│   └── [] - Append operator
+│
+├── Remove Elements
+│   ├── array_pop() - Remove from end
+│   ├── array_shift() - Remove from start
+│   ├── unset() - Remove by key
+│   └── array_splice() - Remove by position
+│
+├── Array Functions
+│   ├── array_merge() - Combine arrays
+│   ├── array_slice() - Extract portion
+│   ├── array_filter() - Filter elements
+│   ├── array_map() - Apply function
+│   ├── array_reduce() - Reduce to single
+│   ├── array_reverse() - Reverse order
+│   ├── array_unique() - Remove duplicates
+│   ├── array_keys() - Get all keys
+│   ├── array_values() - Get all values
+│   └── count() - Count elements
+│
+└── Array Operations
+    ├── array_diff() - Difference
+    ├── array_intersect() - Common elements
+    └── array_combine() - Keys from one, values from another`,
+                learn: ["Indexed Arrays", "Associative Arrays", "Multidimensional Arrays", "Array Functions", "Sorting Methods", "Searching Techniques"],
+                practice: ["Create and traverse arrays", "Sort arrays different ways", "Search in arrays", "Merge and filter arrays", "Build a simple inventory"],
+                interview: ["What is the difference between array_push and []?", "How to remove a specific element from array?", "What functions can filter arrays?", "How to check if value exists in array?"]
+            },
+            {
+                id: 8,
+                title: "Strings",
+                description: Strings are sequences of characters used to represent text.",
+                subtopics: `Strings
+│
+├── String Functions
+│   ├── strlen() - String length
+│   ├── strpos() - Find position
+│   ├── substr() - Extract substring
+│   ├── trim() - Remove whitespace
+│   ├── strtoupper() - Uppercase
+│   ├── strtolower() - Lowercase
+│   ├── ucfirst() - Capitalize first
+│   ├── ucwords() - Capitalize words
+│   ├── explode() - Split by delimiter
+│   ├── implode() - Join array to string
+│   ├── str_replace() - Replace text
+│   └── sprintf() - Format string
+│
+├── String Formatting
+│   ├── concatenation (.)
+│   ├── heredoc syntax
+│   ├── nowdoc syntax
+│   └── double vs single quotes
+│
+├── String Comparison
+│   ├── strcmp()
+│   ├── strcasecmp()
+│   └── substr_compare()
+│
+└── Regular Expressions
+    ├── preg_match()
+    ├── preg_match_all()
+    ├── preg_replace()
+    └── preg_split()`,
+                learn: ["String Creation", "String Manipulation", "String Functions", "String Comparison", "Regular Expressions", "Heredoc/Nowdoc"],
+                practice: ["Count words in string", "Reverse a string", "Validate email format", "Extract domain from URL"],
+                interview: ["What is the difference between strlen and mb_strlen?", "How to check if string contains substring?", "What is preg_match used for?", "Difference between explode and split?"]
+            },
+            {
+                id: 9,
+                title: "Functions",
+                description: Functions are reusable blocks of code that perform specific tasks.",
+                subtopics: `Functions
+│
+├── Function Types
+│   ├── User-defined Functions
+│   ├── Built-in Functions
+│   ├── Anonymous Functions
+│   ├── Arrow Functions (PHP 7.4)
+│   └── Recursive Functions
+│
+├── Parameters
+│   ├── Required parameters
+│   ├── Default parameters
+│   ├── Named arguments
+│   ├── Variable arguments (...)
+│   └── Type hinting
+│
+├── Return Values
+│   ├── return statement
+│   ├── Multiple returns
+│   └── Return type declaration
+│
+├── Advanced Features
+│   ├── Closures
+│   ├── Callback functions
+│   ├── use keyword in closures
+│   ├── Static variables
+│   └── Generators (yield)
+│
+└── Scope
+    ├── Local scope
+    ├── Global scope
+    └── Static variables`,
+                learn: ["Function Declaration", "Parameters and Arguments", "Return Values", "Default Parameters", "Anonymous Functions", "Arrow Functions", "Closures", "Recursion"],
+                practice: ["Create basic functions", "Build a calculator function", "Implement recursive factorial", "Use closures and callbacks"],
+                interview: ["What is the difference between parameters and arguments?", "What are closures?", "How do arrow functions differ?", "What is recursion?"]
+            },
+            {
+                id: 10,
+                title: "Logic Building",
+                description: Logic building is the foundation of programming - solving problems step by step.",
+                subtopics: `Logic
+│
+├── Problem Solving
+│   ├── Algorithm design
+│   ├── Flowchart creation
+│   ├── Pseudocode writing
+│   └── Step-by-step breakdown
+│
+├── Validation Logic
+│   ├── Form validation
+│   ├── Email validation
+│   ├── Password strength
+│   └── Data sanitization
+│
+├── Common Patterns
+│   ├── Number operations
+│   ├── String manipulation
+│   ├── Array processing
+│   ├── Sorting algorithms
+│   └── Searching algorithms
+│
+├── Business Logic
+│   ├── Login authentication
+│   ├── CRUD operations
+│   ├── Pagination logic
+│   ├── Shopping cart
+│   └── Payment processing
+│
+└── Problem Categories
+    ├── Easy (Basic)
+    ├── Medium (Intermediate)
+    └── Hard (Advanced)`,
+                learn: ["Algorithm Thinking", "Flowchart Design", "Problem Decomposition", "Pattern Recognition", "Debugging Techniques", "Code Optimization"],
+                practice: ["Fibonacci Series", "Factorial Calculator", "Palindrome Check", "Sort Array", "Search in Array", "FizzBuzz", "Prime Number Check"],
+                interview: ["How do you approach problem solving?", "Explain your debugging process", "How to optimize code performance?", "What is Big O notation?"]
+            },
+            {
+                id: 11,
+                title: "File Handling",
+                description: File handling allows PHP to read, write, and manipulate files on the server.",
+                subtopics: `Files
+│
+├── File Operations
+│   ├── fopen() - Open file
+│   ├── fclose() - Close file
+│   ├── fread() - Read file
+│   ├── fwrite() - Write to file
+│   ├── file_get_contents() - Read entire file
+│   └── file_put_contents() - Write entire file
+│
+├── File Management
+│   ├── unlink() - Delete file
+│   ├── rename() - Rename file
+│   ├── copy() - Copy file
+│   ├── mkdir() - Create directory
+│   ├── rmdir() - Remove directory
+│   └── scandir() - List directory contents
+│
+├── File Information
+│   ├── file_exists()
+│   ├── is_file()
+│   ├── is_dir()
+│   ├── filesize()
+│   ├── filetype()
+│   └── filemtime()
+│
+├── File Upload
+│   ├── $_FILES superglobal
+│   ├── move_uploaded_file()
+│   ├── File validation
+│   └── Security considerations
+│
+└── File Modes
+    ├── 'r' - Read only
+    ├── 'w' - Write only (truncate)
+    ├── 'a' - Append
+    ├── 'x' - Create and write
+    └── 'r+' - Read and write`,
+                learn: ["File Reading Methods", "File Writing Methods", "Directory Operations", "File Upload Handling", "File Security", "File Information Functions"],
+                practice: ["Read and display file content", "Write data to file", "Create directory structure", "Handle file upload"],
+                interview: ["What is the difference between fopen and file_get_contents?", "How to handle file uploads securely?", "What file modes are available?", "How to check if file exists?"]
+            },
+            {
+                id: 12,
+                title: "Forms",
+                description: HTML forms allow user input which PHP can process and validate.",
+                subtopics: `Forms
+│
+├── Request Methods
+│   ├── GET - URL parameters
+│   ├── POST - Form data
+│   └── REQUEST - Both
+│
+├── Form Handling
+│   ├── $_GET superglobal
+│   ├── $_POST superglobal
+│   ├── $_REQUEST superglobal
+│   └── PHP_SELF for self-processing
+│
+├── Validation
+│   ├── Server-side validation
+│   ├── Required fields
+│   ├── Data type validation
+│   ├── Length validation
+│   └── Pattern validation
+│
+├── Sanitization
+│   ├── filter_var()
+│   ├── filter_input()
+│   ├── htmlspecialchars()
+│   ├── strip_tags()
+│   └── trim()
+│
+├── File Upload Forms
+│   ├── enctype="multipart/form-data"
+│   ├── $_FILES handling
+│   └── Upload validation
+│
+└── Security
+    ├── CSRF protection
+    ├── XSS prevention
+    ├── Input validation
+    └── Output escaping`,
+                learn: ["GET vs POST", "Form Data Processing", "Input Validation", "Data Sanitization", "File Upload Forms", "Security Best Practices"],
+                practice: ["Create contact form", "Process form data", "Validate user input", "Handle file upload form"],
+                interview: ["What is the difference between GET and POST?", "How to prevent CSRF attacks?", "What is input sanitization?", "How to validate form data?"]
+            },
+            {
+                id: 13,
+                title: "Sessions & Cookies",
+                description: Sessions and cookies maintain user state across multiple page requests.",
+                subtopics: `Sessions
+│
+├── Session Functions
+│   ├── session_start() - Start session
+│   ├── session_destroy() - End session
+│   ├── session_unset() - Clear session
+│   ├── session_id() - Get session ID
+│   └── session_name() - Get session name
+│
+├── Session Variables
+│   ├── $_SESSION superglobal
+│   ├── Storing data
+│   ├── Retrieving data
+│   └── Removing data
+│
+├── Cookies
+│   ├── setcookie() - Create cookie
+│   ├── $_COOKIE superglobal
+│   ├── Cookie expiration
+│   ├── Cookie path and domain
+│   └── Secure and httponly flags
+│
+├── Authentication
+│   ├── Login system
+│   ├── Remember me
+│   ├── Session timeout
+│   └── Logout functionality
+│
+└── Security
+    ├── Session hijacking prevention
+    ├── Session fixation
+    ├── Secure cookie settings
+    └── CSRF protection`,
+                learn: ["Session Management", "Cookie Handling", "Session Variables", "User Authentication", "Remember Me Feature", "Session Security"],
+                practice: ["Create login system", "Implement remember me", "Session-based cart", "User preferences storage"],
+                interview: ["What is the difference between sessions and cookies?", "Where are sessions stored?", "How to prevent session hijacking?", "What is session fixation?"]
+            },
+            {
+                id: 14,
+                title: "Error Handling",
+                description: Proper error handling helps identify and fix issues in your code.",
+                subtopics: `Errors
+│
+├── Error Types
+│   ├── E_NOTICE - Runtime notices
+│   ├── E_WARNING - Runtime warnings
+│   ├── E_ERROR - Fatal errors
+│   ├── E_PARSE - Compile errors
+│   ├── E_DEPRECATED - Deprecated code
+│   └── E_ALL - All errors
+│
+├── Error Handling
+│   ├── try - Try block
+│   ├── catch - Catch exception
+│   ├── finally - Always execute
+│   ├── throw - Throw exception
+│   └── set_error_handler()
+│
+├── Exception Class
+│   ├── getMessage()
+│   ├── getCode()
+│   ├── getFile()
+│   ├── getLine()
+│   └── getTrace()
+│
+├── Custom Exceptions
+│   ├── Extending Exception class
+│   ├── Custom error messages
+│   └── Exception hierarchy
+│
+└── Error Reporting
+    ├── error_reporting()
+    ├── display_errors
+    ├── log_errors
+    └── error_log()`,
+                learn: ["Error Types", "Exception Handling", "Try-Catch-Finally", "Custom Exceptions", "Error Reporting", "Best Practices"],
+                practice: ["Handle division by zero", "Create custom exception", "Implement error logging", "Build error handler"],
+                interview: ["What are the different error types?", "What is the difference between error and exception?", "When to use finally block?", "How to create custom exceptions?"]
+            },
+            {
+                id: 15,
+                title: "Database (MySQL)",
+                description: PHP can connect to MySQL databases to store and retrieve data.",
+                subtopics: `Database
+│
+├── MySQL Extensions
+│   ├── MySQLi (Improved)
+│   ├── PDO (PHP Data Objects)
+│   └── Deprecated mysql_* functions
+│
+├── Connection
+│   ├── mysqli_connect()
+│   ├── new PDO()
+│   ├── Connection parameters
+│   └── Connection errors
+│
+├── CRUD Operations
+│   ├── CREATE - INSERT INTO
+│   ├── SELECT - SELECT FROM
+│   ├── UPDATE - UPDATE SET
+│   └── DELETE - DELETE FROM
+│
+├── Prepared Statements
+│   ├── mysqli_prepare()
+│   ├── PDO::prepare()
+│   ├── Bound parameters
+│   └── SQL injection prevention
+│
+├── Advanced Topics
+│   ├── Transactions
+│   ├── Joins (INNER, LEFT, RIGHT)
+│   ├── Aggregate functions (COUNT, SUM, AVG)
+│   ├── Pagination
+│   ├── Stored procedures
+│   └── Database design
+│
+└── Security
+    ├── SQL injection prevention
+    ├── Input validation
+    ├── Parameterized queries
+    └── Least privilege principle`,
+                learn: ["MySQLi Connection", "PDO Connection", "CRUD Operations", "Prepared Statements", "Joins", "Transactions", "Pagination"],
+                practice: ["Connect to database", "Perform CRUD operations", "Use prepared statements", "Implement pagination", "Build student management system"],
+                interview: ["What is the difference between MySQLi and PDO?", "How to prevent SQL injection?", "What are prepared statements?", "Explain database joins"]
+            },
+            {
+                id: 16,
+                title: "Object Oriented PHP",
+                description: OOP allows you to organize code into classes and objects for better code structure.",
+                subtopics: `OOP
+│
+├── Basics
+│   ├── Class definition
+│   ├── Object instantiation
+│   ├── Properties (variables)
+│   ├── Methods (functions)
+│   └── $this keyword
+│
+├── Constructor & Destructor
+│   ├── __construct()
+│   ├── __destruct()
+│   └── Constructor overloading
+│
+├── Access Modifiers
+│   ├── public - Accessible everywhere
+│   ├── protected - Class + children
+│   └── private - Class only
+│
+├── Advanced Concepts
+│   ├── Static properties/methods
+│   ├── Class constants
+│   ├── Inheritance (extends)
+│   ├── Method overriding
+│   ├── final keyword
+│   ├── Abstract classes
+│   ├── Interfaces
+│   └── Traits
+│
+├── Magic Methods
+│   ├── __get(), __set()
+│   ├── __call(), __callStatic()
+│   ├── __toString()
+│   ├── __clone()
+│   └── __autoload()
+│
+├── Design Principles
+│   ├── Encapsulation
+│   ├── Inheritance
+│   ├── Polymorphism
+│   ├── Abstraction
+│   └── SOLID Principles
+│
+└── Advanced
+    ├── Namespaces
+    ├── Autoloading (PSR-4)
+    ├── Dependency Injection
+    └── Design Patterns`,
+                learn: ["Class and Object", "Properties and Methods", "Constructors", "Access Modifiers", "Inheritance", "Interfaces", "Traits", "Magic Methods", "SOLID Principles"],
+                practice: ["Create basic class", "Implement inheritance", "Use interfaces", "Build a library system", "Implement design patterns"],
+                interview: ["What is the difference between public, protected, and private?", "What are interfaces?", "What is polymorphism?", "Explain SOLID principles"]
+            },
+            {
+                id: 17,
+                title: "Security",
+                description: Security is crucial for protecting your PHP applications from attacks.",
+                subtopics: `Security
+│
+├── Input Security
+│   ├── Validation - Check format
+│   ├── Sanitization - Clean input
+│   ├── Type checking
+│   └── Whitelist validation
+│
+├── Common Attacks
+│   ├── SQL Injection
+│   ├── XSS (Cross-Site Scripting)
+│   ├── CSRF (Cross-Site Request Forgery)
+│   ├── Session Hijacking
+│   └── File Upload Attacks
+│
+├── Prevention Techniques
+│   ├── Prepared statements (SQL)
+│   ├── htmlspecialchars() (XSS)
+│   ├── CSRF tokens
+│   ├── Secure sessions
+│   └── File validation
+│
+├── Password Security
+│   ├── password_hash()
+│   ├── password_verify()
+│   ├── password_needs_rehash()
+│   └── bcrypt/Argon2
+│
+└── Best Practices
+    ├── HTTPS only
+    ├── Secure headers
+    ├── Content Security Policy
+    ├── Error hiding in production
+    └── Regular updates`,
+                learn: ["Input Validation", "SQL Injection Prevention", "XSS Prevention", "CSRF Protection", "Password Hashing", "Secure Sessions", "File Upload Security"],
+                practice: ["Implement form validation", "Prevent SQL injection", "Add CSRF protection", "Hash passwords properly"],
+                interview: ["What is SQL injection?", "How to prevent XSS attacks?", "What is CSRF?", "How does password_hash work?"]
+            },
+            {
+                id: 18,
+                title: "Composer",
+                description: Composer is a dependency manager for PHP that manages packages and libraries.",
+                subtopics: `Composer
+│
+├── Installation
+│   ├── Download Composer
+│   ├── Global install
+│   └── Project-local install
+│
+├── Configuration
+│   ├── composer.json
+│   ├── composer.lock
+│   ├── Package versions
+│   └── Repository configuration
+│
+├── Commands
+│   ├── composer init
+│   ├── composer install
+│   ├── composer update
+│   ├── composer require
+│   ├── composer remove
+│   └── composer dump-autoload
+│
+├── Autoloading
+│   ├── PSR-4 autoloading
+│   ├── Classmap autoloading
+│   ├── Files autoloading
+│   └── Custom autoloader
+│
+└── Packages
+    ├── Packagist.org
+    ├── Version constraints
+    ├── Dev dependencies
+    └── Scripts`,
+                learn: ["Composer Installation", "composer.json Configuration", "Package Management", "PSR-4 Autoloading", "Version Constraints", "Best Practices"],
+                practice: ["Install Composer", "Create composer.json", "Add packages", "Implement PSR-4 autoloading"],
+                interview: ["What is Composer?", "What is PSR-4 autoloading?", "What is the difference between install and update?", "What is composer.lock?"]
+            },
+            {
+                id: 19,
+                title: "MVC",
+                description: MVC (Model-View-Controller) is a design pattern that separates application logic.",
+                subtopics: `MVC
+│
+├── Components
+│   ├── Model - Data and business logic
+│   ├── View - User interface
+│   └── Controller - Request handling
+│
+├── Routing
+│   ├── URL routing
+│   ├── Route parameters
+│   ├── HTTP methods
+│   └── Route groups
+│
+├── Template Engine
+│   ├── Blade (Laravel)
+│   ├── Twig
+│   ├── Plain PHP
+│   └── Template inheritance
+│
+├── Request & Response
+│   ├── Request object
+│   ├── Response object
+│   ├── Headers
+│   └── Status codes
+│
+├── Middleware
+│   ├── Authentication
+│   ├── Logging
+│   ├── CORS
+│   └── Rate limiting
+│
+└── Best Practices
+    ├── Separation of concerns
+    ├── DRY principle
+    ├── Single responsibility
+    └── loose coupling`,
+                learn: ["MVC Architecture", "Model Layer", "View Layer", "Controller Layer", "Routing System", "Template Engines", "Middleware"],
+                practice: ["Create MVC structure", "Implement routing", "Build simple MVC app", "Add middleware"],
+                interview: ["What is MVC pattern?", "What is the role of Controller?", "How does routing work?", "What are middleware?"]
+            },
+            {
+                id: 20,
+                title: "REST API",
+                description: REST APIs allow communication between client and server using HTTP methods.",
+                subtopics: `REST API
+│
+├── HTTP Methods
+│   ├── GET - Retrieve data
+│   ├── POST - Create data
+│   ├── PUT - Update entire resource
+│   ├── PATCH - Partial update
+│   └── DELETE - Remove data
+│
+├── Data Format
+│   ├── JSON encoding
+│   ├── JSON decoding
+│   ├── XML (alternative)
+│   └── Content-Type headers
+│
+├── Authentication
+│   ├── API keys
+│   ├── JWT (JSON Web Tokens)
+│   ├── OAuth 2.0
+│   └── Basic Authentication
+│
+├── Response
+│   ├── Status codes (200, 201, 400, 404, 500)
+│   ├── Response headers
+│   ├── Error handling
+│   └── Pagination
+│
+├── Best Practices
+│   ├── RESTful naming
+│   ├── Versioning
+│   ├── Rate limiting
+│   ├── Documentation
+│   └── Error messages
+│
+└── Security
+    ├── CORS
+    ├── HTTPS
+    ├── Input validation
+    └── Rate limiting`,
+                learn: ["RESTful Principles", "HTTP Methods", "JSON Handling", "API Authentication", "JWT Implementation", "Error Handling", "API Documentation"],
+                practice: ["Build simple REST API", "Implement CRUD endpoints", "Add JWT authentication", "Create API documentation"],
+                interview: ["What is REST?", "What are HTTP status codes?", "What is JWT?", "How to version an API?"]
+            },
+            {
+                id: 21,
+                title: "Projects",
+                description: Apply your knowledge by building real-world projects.",
+                subtopics: `Projects
+│
+├── Beginner Projects
+│   ├── Calculator
+│   ├── Unit Converter
+│   ├── Quiz Application
+│   └── To-Do List
+│
+├── Intermediate Projects
+│   ├── Student Management System
+│   ├── CRUD Application
+│   ├── Blog System
+│   ├── Login System
+│   └── Contact Form
+│
+├── Advanced Projects
+│   ├── Content Management System (CMS)
+│   ├── E-commerce Platform
+│   ├── Task Manager
+│   ├── Chat Application
+│   ├── Inventory System
+│   └── REST API Backend
+│
+└── Capstone Projects
+    ├── Social Media Platform
+    ├── Job Portal
+    ├── Learning Management System
+    └── Laravel Project
+│
+├── Skills to Apply
+│   ├── All PHP Fundamentals
+│   ├── Database Design
+│   ├── Security Implementation
+│   ├── API Development
+│   └── OOP Concepts
+│
+└── Portfolio Tips
+    ├── Document your code
+    ├── Deploy projects
+    ├── Write README files
+    └── Share on GitHub`,
+                learn: ["Project Planning", "Requirements Gathering", "Database Design", "Code Structure", "Testing", "Deployment"],
+                practice: ["Build Calculator", "Create Student Management", "Develop Blog System", "Build E-commerce", "Create REST API", "Build Chat App"],
+                interview: ["Describe a project you built", "What challenges did you face?", "How did you handle security?", "What did you learn?"]
+            }
+        ];
+
+        // Load progress from localStorage
+        let completedTopics = JSON.parse(localStorage.getItem('phpCompletedTopics')) || [];
+
+        function renderTopics(topics) {
+            const mindmap = document.getElementById('mindmap');
+            mindmap.innerHTML = '';
+
+            topics.forEach(topic => {
+                const isCompleted = completedTopics.includes(topic.id);
+                const card = document.createElement('div');
+                card.className = `topic-card ${isCompleted ? 'completed' : ''}`;
+                card.dataset.id = topic.id;
+                card.dataset.searchText = `${topic.title} ${topic.description} ${topic.learn.join(' ')} ${topic.practice.join(' ')} ${topic.interview.join(' ')}`.toLowerCase();
+
+                card.innerHTML = `
+                    <div class="topic-header" onclick="toggleTopic(${topic.id})">
+                        <h2>
+                            <span class="topic-number">${isCompleted ? '✓' : topic.id}</span>
+                            ${topic.title}
+                        </h2>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="topic-content">
+                        <div class="content-inner">
+                            <div class="description">
+                                <strong>📖 Description:</strong> ${topic.description}
+                            </div>
+
+                            <div class="subtopics">
+                                <h3>🌳 Sub Topics</h3>
+                                <div class="subtopic-tree">${topic.subtopics}</div>
+                            </div>
+
+                            <div class="learn-section">
+                                <h3>📚 What to Learn</h3>
+                                <div class="tag-list">
+                                    ${topic.learn.map(item => `<span class="tag">${item}</span>`).join('')}
+                                </div>
+                            </div>
+
+                            <div class="practice-section">
+                                <h3>🏋️ Practice Exercises</h3>
+                                <div class="tag-list">
+                                    ${topic.practice.map(item => `<span class="tag practice">${item}</span>`).join('')}
+                                </div>
+                            </div>
+
+                            <div class="interview-section">
+                                <h3>🎤 Interview Questions</h3>
+                                <div class="tag-list">
+                                    ${topic.interview.map(item => `<span class="tag interview">${item}</span>`).join('')}
+                                </div>
+                            </div>
+
+                            <button class="complete-btn" onclick="toggleComplete(${topic.id})">
+                                ${isCompleted ? '✅ Completed - Click to Undo' : '☐ Mark as Complete'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                mindmap.appendChild(card);
+            });
+
+            updateStats();
+        }
+
+        function toggleTopic(id) {
+            const card = document.querySelector(`.topic-card[data-id="${id}"]`);
+            card.classList.toggle('expanded');
+        }
+
+        function toggleComplete(id) {
+            const index = completedTopics.indexOf(id);
+            if (index === -1) {
+                completedTopics.push(id);
+            } else {
+                completedTopics.splice(index, 1);
+            }
+            localStorage.setItem('phpCompletedTopics', JSON.stringify(completedTopics));
+            renderTopics(phpTopics);
+        }
+
+        function updateStats() {
+            const total = phpTopics.length;
+            const completed = completedTopics.length;
+            const percent = Math.round((completed / total) * 100);
+
+            document.getElementById('totalTopics').textContent = total;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('progressPercent').textContent = `${percent}%`;
+            document.getElementById('progressFill').style.width = `${percent}%`;
+        }
+
+        function expandAll() {
+            document.querySelectorAll('.topic-card').forEach(card => {
+                card.classList.add('expanded');
+            });
+        }
+
+        function collapseAll() {
+            document.querySelectorAll('.topic-card').forEach(card => {
+                card.classList.remove('expanded');
+            });
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress?')) {
+                completedTopics = [];
+                localStorage.removeItem('phpCompletedTopics');
+                renderTopics(phpTopics);
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+
+            document.querySelectorAll('.topic-card').forEach(card => {
+                const searchText = card.dataset.searchText;
+                if (searchText.includes(searchTerm) || searchTerm === '') {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+
+        // Initial render
+        renderTopics(phpTopics);
+    </script>
+</body>
+</html>
